@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel - Estudiantes</title>
+  <link rel="stylesheet" href="/styles/dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="container">
+
+    <h1>Panel de Estudiantes</h1>
+<button onclick="cerrarSesion()" class="cerrar-btn">Cerrar sesión</button>
+  
+    <section class="card">
+      <h2>Registrar estudiante</h2>
+      <input type="text" id="nombre" placeholder="Nombre del estudiante" />
+      <input type="email" id="correo" placeholder="Correo" />
+      <input type="text" id="clase" placeholder="Clase" />
+      <button onclick="agregarEstudiante()">Agregar</button>
+    </section>
+
+   
+    <section class="card">
+      <h2>Lista de estudiantes</h2>
+      <ul id="lista-estudiantes"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Subir archivo</h2>
+      <label for="estudiante">Selecciona un estudiante:</label>
+      <select id="estudiante"></select><br /><br />
+
+      <input type="file" id="archivo" />
+      <button onclick="subirArchivo()">Subir</button>
+    </section>
+
+    <section class="card">
+      <h2>Archivos subidos</h2>
+      <ul id="lista-archivos"></ul>
+    </section>
+
+    </div>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
