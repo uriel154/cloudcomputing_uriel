@@ -111,9 +111,13 @@
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js"></script>
 
   <script>
+    // Inicializar cliente de Supabase
+    const SUPABASE_URL = "TU_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     // Mostrar login o panel dependiendo de la sesión
     document.addEventListener("DOMContentLoaded", async () => {
       const { data: { user } } = await client.auth.getUser();
@@ -169,5 +173,8 @@
       }
     }
   </script>
+
+  <!-- Tu lógica de app (agregar estudiantes, subir archivos, etc.) -->
+  <script src="app.js"></script>
 </body>
 </html>
