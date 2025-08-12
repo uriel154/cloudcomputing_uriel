@@ -68,7 +68,7 @@ input:focus, select:focus {
   box-shadow: 0 0 4px rgba(52,152,219,0.3);
 }
 
-/* 🟦 Botones generales */
+/* 🟦 Botones */
 button {
   padding: 10px 20px;
   border: none;
@@ -78,6 +78,7 @@ button {
   font-weight: 500;
   font-size: 15px;
   cursor: pointer;
+  width: 100%;
   transition: background 0.2s ease;
 }
 
@@ -121,38 +122,4 @@ th, td {
 
 tr:hover {
   background-color: #f9f9f9;
-}
-
-/* 🟢 Botón Editar */
-.btn-editar {
-  background: #2ecc71;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s ease, transform 0.1s ease;
-}
-
-.btn-editar:hover {
-  background: #27ae60;
-  transform: scale(1.05);
-}
-
-/* 🔴 Botón Eliminar */
-.btn-eliminar {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s ease, transform 0.1s ease;
-}
-
-.btn-eliminar:hover {
-  background: #c0392b;
-  transform: scale(1.05);
 }
