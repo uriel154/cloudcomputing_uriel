@@ -1,7 +1,6 @@
-const SUPABASE_URL = "https://aplyqmgoinnerwbtyzmc.supabase.co";
+const SUPABASE_URL = "https://cbubruvpcavyyhvtxjkl.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNidWJydXZwY2F2eXlodnR4amtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDM3NjAsImV4cCI6MjA3MDA3OTc2MH0.cnfhANKD3jw7HkeixMVTUnw3hSCjfCN55q8MkHNCW9E";
-
-const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function agregarEstudiante() {
   const nombre = document.getElementById("nombre").value.trim();
