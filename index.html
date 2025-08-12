@@ -29,24 +29,12 @@
     </div>
   </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" style="display:none;">
-    <h2>Panel de Datos</h2>
-    <input type="text" id="new-item" placeholder="Nuevo dato..." />
-    <button onclick="addItem()">Agregar</button>
-
-    <ul id="items-list"></ul>
-
-    <button onclick="logout()">Cerrar sesión</button>
-  </div>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const supabaseUrl = "TU_URL_SUPABASE";
     const supabaseKey = "TU_KEY_SUPABASE";
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Cambiar entre formularios
     function toggleForms() {
       document.getElementById('login-form').style.display =
         document.getElementById('login-form').style.display === 'none' ? 'block' : 'none';
@@ -54,7 +42,6 @@
         document.getElementById('register-form').style.display === 'none' ? 'block' : 'none';
     }
 
-    // REGISTRAR
     async function register() {
       const email = document.getElementById('reg-email').value;
       const password = document.getElementById('reg-password').value;
@@ -63,74 +50,12 @@
       else alert("Usuario registrado correctamente");
     }
 
-    // LOGIN
     async function login() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) alert(error.message);
-      else {
-        document.getElementById('auth-container').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        loadItems();
-      }
-    }
-
-    // LOGOUT
-    async function logout() {
-      await supabase.auth.signOut();
-      document.getElementById('dashboard').style.display = 'none';
-      document.getElementById('auth-container').style.display = 'block';
-    }
-
-    // CARGAR ITEMS
-    async function loadItems() {
-      const { data, error } = await supabase.from('items').select('*');
-      if (error) {
-        console.error(error);
-        return;
-      }
-      const list = document.getElementById('items-list');
-      list.innerHTML = '';
-      data.forEach(item => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          ${item.name} 
-          <button onclick="editItem(${item.id}, '${item.name}')">Editar</button>
-          <button onclick="deleteItem(${item.id})">Eliminar</button>
-        `;
-        list.appendChild(li);
-      });
-    }
-
-    // AGREGAR ITEM
-    async function addItem() {
-      const name = document.getElementById('new-item').value;
-      const { error } = await supabase.from('items').insert([{ name }]);
-      if (error) alert(error.message);
-      else {
-        document.getElementById('new-item').value = '';
-        loadItems();
-      }
-    }
-
-    // EDITAR ITEM
-    async function editItem(id, currentName) {
-      const newName = prompt("Editar nombre:", currentName);
-      if (newName && newName !== currentName) {
-        const { error } = await supabase.from('items').update({ name: newName }).eq('id', id);
-        if (error) alert(error.message);
-        else loadItems();
-      }
-    }
-
-    // ELIMINAR ITEM
-    async function deleteItem(id) {
-      if (confirm("¿Seguro que quieres eliminar este elemento?")) {
-        const { error } = await supabase.from('items').delete().eq('id', id);
-        if (error) alert(error.message);
-        else loadItems();
-      }
+      else window.location.href = "/dashboard.html"; // Redirige al panel
     }
   </script>
 </body>
