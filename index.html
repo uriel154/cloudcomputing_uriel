@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión de Estudiantes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    form {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-bottom: 20px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    table th {
+      background: #007BFF;
+      color: white;
+    }
+    button {
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-primary { background: #007BFF; color: white; }
+    .btn-danger { background: #dc3545; color: white; }
+    .btn-warning { background: #ffc107; color: black; }
+    .archivo-item {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📚 Gestión de Estudiantes</h1>
+
+  <!-- Formulario para agregar estudiante -->
+  <form onsubmit="event.preventDefault(); agregarEstudiante();">
+    <h2>Agregar estudiante</h2>
+    <input type="text" id="nombre" placeholder="Nombre" required /><br>
+    <input type="email" id="correo" placeholder="Correo" required /><br>
+    <input type="text" id="clase" placeholder="Clase" required /><br>
+    <button class="btn-primary" type="submit">Agregar</button>
+  </form>
+
+  <!-- Tabla de estudiantes -->
+  <h2>Lista de estudiantes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Clase</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="lista-estudiantes">
+      <!-- Filas generadas dinámicamente -->
+    </tbody>
+  </table>
+
+  <!-- Subida de archivos -->
+  <h2>📤 Subir archivo</h2>
+  <input type="file" id="archivo" />
+  <button class="btn-primary" onclick="subirArchivo()">Subir</button>
+
+  <h2>📂 Archivos</h2>
+  <ul id="lista-archivos">
+    <!-- Archivos listados dinámicamente -->
+  </ul>
+
+  <!-- Botón de cerrar sesión -->
+  <button class="btn-danger" onclick="cerrarSesion()">Cerrar sesión</button>
+
+  <!-- Librería de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Tu script -->
+  <script src="app.js"></script>
+</body>
+</html>
