@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <title>Mi Clase en la Nube - Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles/index.css" />
- </head>
+  <!-- Ruta corregida al archivo CSS -->
+  <link rel="stylesheet" href="/styles.css" />
+</head>
 <body>
   <h1>Bienvenida a Mi Clase en la Nube</h1>
 
   <div id="auth-container">
-  
     <div id="login-form">
       <h2>Iniciar Sesión</h2>
       <input type="email" id="email" placeholder="Correo" />
@@ -27,7 +27,10 @@
       <p>¿Ya tienes cuenta? <a href="#" onclick="toggleForms()">Inicia sesión aquí</a></p>
     </div>
   </div>
+
+  <!-- Librería de Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Ruta corregida al archivo JS -->
   <script src="/js/auth.js"></script>
 </body>
 </html>
