@@ -1,33 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mi Clase en la Nube - Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles/index.css" />
- </head>
-<body>
-  <h1>Bienvenida a Mi Clase en la Nube</h1>
-
-  <div id="auth-container">
-  
-    <div id="login-form">
-      <h2>Iniciar Sesión</h2>
-      <input type="email" id="email" placeholder="Correo" />
-      <input type="password" id="password" placeholder="Contraseña" />
-      <button onclick="login()">Entrar</button>
-      <p>¿No tienes cuenta? <a href="#" onclick="toggleForms()">Regístrate aquí</a></p>
-    </div>
-
-    <div id="register-form" style="display:none;">
-      <h2>Registrarse</h2>
-      <input type="email" id="reg-email" placeholder="Correo" />
-      <input type="password" id="reg-password" placeholder="Contraseña" />
-      <button onclick="register()">Crear cuenta</button>
-      <p>¿Ya tienes cuenta? <a href="#" onclick="toggleForms()">Inicia sesión aquí</a></p>
-    </div>
-  </div>
+  <meta charset="UTF-8">
+  <title>Panel - Estudiantes</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/js/auth.js"></script>
+  <link rel="stylesheet" href="/styles/dashboard.css" />
+</head>
+<body>
+  <div class="container">
+
+    <h1>Panel de Estudiantes</h1>
+<button onclick="cerrarSesion()" class="cerrar-btn">Cerrar sesión</button>
+  
+    <section class="card">
+      <h2>Registrar estudiante</h2>
+      <input type="text" id="nombre" placeholder="Nombre del estudiante" />
+      <input type="email" id="correo" placeholder="Correo" />
+      <input type="text" id="clase" placeholder="Clase" />
+      <button onclick="agregarEstudiante()">Agregar</button>
+    </section>
+
+   
+    <section class="card">
+  <h2>Lista de estudiantes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Clase</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="lista-estudiantes"></tbody>
+  </table>
+</section>
+
+
+    <section class="card">
+      <h2>Subir archivo</h2>
+      <label for="estudiante">Selecciona un estudiante:</label>
+      <select id="estudiante"></select><br /><br />
+
+      <input type="file" id="archivo" />
+      <button onclick="subirArchivo()">Subir</button>
+    </section>
+
+    <section class="card">
+      <h2>Archivos subidos</h2>
+      <ul id="lista-archivos"></ul>
+    </section>
+
+    </div>
+  <script src="/js/dashboard.js"></script>
 </body>
 </html>

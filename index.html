@@ -2,179 +2,32 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gestión de Estudiantes - Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      padding: 20px;
-    }
-    h1, h2 { text-align: center; }
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin: 0 auto;
-      max-width: 400px;
-      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
-    }
-    input, button {
-      padding: 8px;
-      margin: 5px 0;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    button {
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn-primary { background: #007BFF; color: white; }
-    .btn-danger { background: #dc3545; color: white; }
-    .hidden { display: none; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      margin-bottom: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background: #007BFF;
-      color: white;
-    }
-  </style>
-</head>
+  <title>Mi Clase en la Nube - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/index.css" />
+ </head>
 <body>
+  <h1>Bienvenida a Mi Clase en la Nube</h1>
 
-  <!-- LOGIN -->
-  <div id="login-section" class="card">
-    <h1>🔐 Iniciar sesión</h1>
-    <input type="email" id="login-email" placeholder="Correo electrónico" required />
-    <input type="password" id="login-password" placeholder="Contraseña" required />
-    <button class="btn-primary" onclick="iniciarSesion()">Ingresar</button>
-    <p>¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate aquí</a></p>
+  <div id="auth-container">
+  
+    <div id="login-form">
+      <h2>Iniciar Sesión</h2>
+      <input type="email" id="email" placeholder="Correo" />
+      <input type="password" id="password" placeholder="Contraseña" />
+      <button onclick="login()">Entrar</button>
+      <p>¿No tienes cuenta? <a href="#" onclick="toggleForms()">Regístrate aquí</a></p>
+    </div>
+
+    <div id="register-form" style="display:none;">
+      <h2>Registrarse</h2>
+      <input type="email" id="reg-email" placeholder="Correo" />
+      <input type="password" id="reg-password" placeholder="Contraseña" />
+      <button onclick="register()">Crear cuenta</button>
+      <p>¿Ya tienes cuenta? <a href="#" onclick="toggleForms()">Inicia sesión aquí</a></p>
+    </div>
   </div>
-
-  <!-- REGISTRO -->
-  <div id="register-section" class="card hidden">
-    <h1>📝 Crear cuenta</h1>
-    <input type="email" id="register-email" placeholder="Correo electrónico" required />
-    <input type="password" id="register-password" placeholder="Contraseña" required />
-    <button class="btn-primary" onclick="registrarUsuario()">Registrar</button>
-    <p>¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin()">Inicia sesión</a></p>
-  </div>
-
-  <!-- PANEL PRINCIPAL -->
-  <div id="panel-section" class="hidden">
-    <h1>📚 Gestión de Estudiantes</h1>
-
-    <!-- Formulario para agregar estudiante -->
-    <form onsubmit="event.preventDefault(); agregarEstudiante();" class="card">
-      <h2>Agregar estudiante</h2>
-      <input type="text" id="nombre" placeholder="Nombre" required /><br>
-      <input type="email" id="correo" placeholder="Correo" required /><br>
-      <input type="text" id="clase" placeholder="Clase" required /><br>
-      <button class="btn-primary" type="submit">Agregar</button>
-    </form>
-
-    <!-- Lista de estudiantes -->
-    <h2>Lista de estudiantes</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Correo</th>
-          <th>Clase</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="lista-estudiantes"></tbody>
-    </table>
-
-    <!-- Subida de archivos -->
-    <h2>📤 Subir archivo</h2>
-    <input type="file" id="archivo" />
-    <button class="btn-primary" onclick="subirArchivo()">Subir</button>
-
-    <h2>📂 Archivos</h2>
-    <ul id="lista-archivos"></ul>
-
-    <!-- Cerrar sesión -->
-    <button class="btn-danger" onclick="cerrarSesion()">Cerrar sesión</button>
-  </div>
-
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    // Inicializar cliente de Supabase
-    const SUPABASE_URL = "TU_SUPABASE_URL";
-    const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // Mostrar login o panel dependiendo de la sesión
-    document.addEventListener("DOMContentLoaded", async () => {
-      const { data: { user } } = await client.auth.getUser();
-      if (user) {
-        mostrarPanel();
-      } else {
-        mostrarLogin();
-      }
-    });
-
-    function mostrarLogin() {
-      document.getElementById("login-section").classList.remove("hidden");
-      document.getElementById("register-section").classList.add("hidden");
-      document.getElementById("panel-section").classList.add("hidden");
-    }
-
-    function mostrarRegistro() {
-      document.getElementById("login-section").classList.add("hidden");
-      document.getElementById("register-section").classList.remove("hidden");
-      document.getElementById("panel-section").classList.add("hidden");
-    }
-
-    function mostrarPanel() {
-      document.getElementById("login-section").classList.add("hidden");
-      document.getElementById("register-section").classList.add("hidden");
-      document.getElementById("panel-section").classList.remove("hidden");
-      cargarEstudiantes();
-      listarArchivos();
-    }
-
-    async function iniciarSesion() {
-      const email = document.getElementById("login-email").value.trim();
-      const password = document.getElementById("login-password").value.trim();
-
-      const { error } = await client.auth.signInWithPassword({ email, password });
-      if (error) {
-        alert("Error al iniciar sesión: " + error.message);
-      } else {
-        mostrarPanel();
-      }
-    }
-
-    async function registrarUsuario() {
-      const email = document.getElementById("register-email").value.trim();
-      const password = document.getElementById("register-password").value.trim();
-
-      const { error } = await client.auth.signUp({ email, password });
-      if (error) {
-        alert("Error al registrar: " + error.message);
-      } else {
-        alert("Usuario registrado ✅. Ahora inicia sesión.");
-        mostrarLogin();
-      }
-    }
-  </script>
-
-  <!-- Tu lógica de app (agregar estudiantes, subir archivos, etc.) -->
-  <script src="app.js"></script>
+  <script src="/js/auth.js"></script>
 </body>
 </html>

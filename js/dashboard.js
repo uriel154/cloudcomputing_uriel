@@ -1,33 +1,25 @@
-// =============================
-// Configuración Supabase
-// =============================
-const SUPABASE_URL = "https://cbubruvpcavyyhvtxjkl.supabase.co";
+const SUPABASE_URL = "https://aplyqmgoinnerwbtyzmc.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNidWJydXZwY2F2eXlodnR4amtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDM3NjAsImV4cCI6MjA3MDA3OTc2MH0.cnfhANKD3jw7HkeixMVTUnw3hSCjfCN55q8MkHNCW9E";
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// =============================
-// Función auxiliar para mostrar mensajes
-// =============================
-function showToast(msg, type = "info") {
-  alert(`${type.toUpperCase()}: ${msg}`);
-}
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// =============================
-// Agregar estudiante
-// =============================
 async function agregarEstudiante() {
   const nombre = document.getElementById("nombre").value.trim();
   const correo = document.getElementById("correo").value.trim();
   const clase = document.getElementById("clase").value.trim();
 
   if (!nombre || !correo || !clase) {
-    showToast("Todos los campos son obligatorios.", "error");
+    alert("Por favor completa todos los campos.");
     return;
   }
 
-  const { data: { user }, error: userError } = await client.auth.getUser();
+  const {
+    data: { user },
+    error: userError,
+  } = await client.auth.getUser();
+
   if (userError || !user) {
-    showToast("No estás autenticado.", "error");
+    alert("No estás autenticado.");
     return;
   }
 
@@ -35,20 +27,17 @@ async function agregarEstudiante() {
     nombre,
     correo,
     clase,
-    user_id: user.id
+    user_id: user.id,
   });
 
   if (error) {
-    showToast("Error al agregar: " + error.message, "error");
+    alert("Error al agregar: " + error.message);
   } else {
-    showToast("Estudiante agregado ✅", "success");
+    alert("Estudiante agregado");
     cargarEstudiantes();
   }
 }
 
-// =============================
-// Cargar estudiantes
-// =============================
 async function cargarEstudiantes() {
   const { data, error } = await client
     .from("estudiantes")
@@ -56,7 +45,7 @@ async function cargarEstudiantes() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    showToast("Error al cargar estudiantes: " + error.message, "error");
+    alert("Error al cargar estudiantes: " + error.message);
     return;
   }
 
@@ -77,9 +66,7 @@ async function cargarEstudiantes() {
   });
 }
 
-// =============================
 // Editar estudiante
-// =============================
 async function editarEstudiante(id) {
   const { data: estudiante, error } = await client
     .from("estudiantes")
@@ -88,96 +75,113 @@ async function editarEstudiante(id) {
     .single();
 
   if (error) {
-    showToast("Error al obtener datos: " + error.message, "error");
+    alert("Error al obtener datos: " + error.message);
     return;
   }
 
-  const nuevoNombre = prompt("Nuevo nombre:", estudiante.nombre)?.trim();
-  const nuevoCorreo = prompt("Nuevo correo:", estudiante.correo)?.trim();
-  const nuevaClase = prompt("Nueva clase:", estudiante.clase)?.trim();
+  const nuevoNombre = prompt("Nuevo nombre:", estudiante.nombre);
+  const nuevoCorreo = prompt("Nuevo correo:", estudiante.correo);
+  const nuevaClase = prompt("Nueva clase:", estudiante.clase);
 
   if (!nuevoNombre || !nuevoCorreo || !nuevaClase) {
-    showToast("Todos los campos son obligatorios.", "error");
+    alert("Todos los campos son obligatorios.");
     return;
   }
 
   const { error: updateError } = await client
     .from("estudiantes")
-    .update({ nombre: nuevoNombre, correo: nuevoCorreo, clase: nuevaClase })
+    .update({
+      nombre: nuevoNombre,
+      correo: nuevoCorreo,
+      clase: nuevaClase,
+    })
     .eq("id", id);
 
   if (updateError) {
-    showToast("Error al actualizar: " + updateError.message, "error");
+    alert("Error al actualizar: " + updateError.message);
   } else {
-    showToast("Estudiante actualizado ✅", "success");
+    alert("Estudiante actualizado ✅");
     cargarEstudiantes();
   }
 }
 
-// =============================
 // Eliminar estudiante
-// =============================
 async function eliminarEstudiante(id) {
   if (!confirm("¿Seguro que quieres eliminar este estudiante?")) return;
 
-  const { error } = await client.from("estudiantes").delete().eq("id", id);
+  const { error } = await client
+    .from("estudiantes")
+    .delete()
+    .eq("id", id);
 
   if (error) {
-    showToast("Error al eliminar: " + error.message, "error");
+    alert("Error al eliminar: " + error.message);
   } else {
-    showToast("Estudiante eliminado ✅", "success");
+    alert("Estudiante eliminado ✅");
     cargarEstudiantes();
   }
 }
 
-// =============================
 // Subir archivo
-// =============================
 async function subirArchivo() {
-  const archivo = document.getElementById("archivo").files[0];
+  const archivoInput = document.getElementById("archivo");
+  const archivo = archivoInput.files[0];
+
   if (!archivo) {
-    showToast("Selecciona un archivo primero.", "error");
+    alert("Selecciona un archivo primero.");
     return;
   }
 
   if (archivo.size > 5 * 1024 * 1024) {
-    showToast("El archivo no debe superar los 5 MB.", "error");
+    alert("El archivo no debe superar los 5 MB.");
     return;
   }
 
-  const { data: { user }, error: userError } = await client.auth.getUser();
+  const {
+    data: { user },
+    error: userError,
+  } = await client.auth.getUser();
+
   if (userError || !user) {
-    showToast("Sesión no válida.", "error");
+    alert("Sesión no válida.");
     return;
   }
 
   const nombreRuta = `${user.id}/${archivo.name}`;
 
-  const { data: existentes } = await client.storage.from("tareas").list(user.id);
-  if (existentes?.some(f => f.name === archivo.name)) {
-    if (!confirm("Ya existe un archivo con ese nombre. ¿Deseas reemplazarlo?")) return;
+  const { data: existentes } = await client.storage
+    .from("tareas")
+    .list(user.id);
+
+  if (existentes?.some((f) => f.name === archivo.name)) {
+    const reemplazar = confirm("Ya existe un archivo con ese nombre. ¿Deseas reemplazarlo?");
+    if (!reemplazar) return;
   }
 
   const { error } = await client.storage
     .from("tareas")
-    .upload(nombreRuta, archivo, { cacheControl: "3600", upsert: true });
+    .upload(nombreRuta, archivo, {
+      cacheControl: "3600",
+      upsert: true,
+    });
 
   if (error) {
-    showToast("Error al subir: " + error.message, "error");
+    alert("Error al subir: " + error.message);
   } else {
-    showToast("Archivo subido correctamente ✅", "success");
-    document.getElementById("archivo").value = "";
+    alert("Archivo subido correctamente ✅");
+    archivoInput.value = ""; // limpiar input
     listarArchivos();
   }
 }
 
-// =============================
-// Listar archivos
-// =============================
 async function listarArchivos() {
-  const { data: { user }, error: userError } = await client.auth.getUser();
+  const {
+    data: { user },
+    error: userError,
+  } = await client.auth.getUser();
+
   if (userError || !user) {
-    showToast("Sesión no válida.", "error");
+    alert("Sesión no válida.");
     return;
   }
 
@@ -193,6 +197,7 @@ async function listarArchivos() {
     return;
   }
 
+  // Usamos for...of para await
   for (const archivo of data) {
     const { data: signedUrlData, error: signedUrlError } = await client.storage
       .from("tareas")
@@ -206,14 +211,21 @@ async function listarArchivos() {
     const publicUrl = signedUrlData.signedUrl;
     const item = document.createElement("li");
 
-    if (/\.(jpg|jpeg|png|gif)$/i.test(archivo.name)) {
-      item.innerHTML = `<strong>${archivo.name}</strong><br>
+    const esImagen = archivo.name.match(/\.(jpg|jpeg|png|gif)$/i);
+    const esPDF = archivo.name.match(/\.pdf$/i);
+
+    if (esImagen) {
+      item.innerHTML = `
+        <strong>${archivo.name}</strong><br>
         <a href="${publicUrl}" target="_blank">
           <img src="${publicUrl}" width="150" style="border:1px solid #ccc; margin:5px;" />
-        </a>`;
-    } else if (/\.pdf$/i.test(archivo.name)) {
-      item.innerHTML = `<strong>${archivo.name}</strong><br>
-        <a href="${publicUrl}" target="_blank">Ver PDF</a>`;
+        </a>
+      `;
+    } else if (esPDF) {
+      item.innerHTML = `
+        <strong>${archivo.name}</strong><br>
+        <a href="${publicUrl}" target="_blank">Ver PDF</a>
+      `;
     } else {
       item.innerHTML = `<a href="${publicUrl}" target="_blank">${archivo.name}</a>`;
     }
@@ -222,22 +234,17 @@ async function listarArchivos() {
   }
 }
 
-// =============================
-// Cerrar sesión
-// =============================
 async function cerrarSesion() {
   const { error } = await client.auth.signOut();
+
   if (error) {
-    showToast("Error al cerrar sesión: " + error.message, "error");
+    alert("Error al cerrar sesión: " + error.message);
   } else {
     localStorage.removeItem("token");
-    showToast("Sesión cerrada ✅", "success");
+    alert("Sesión cerrada.");
     window.location.href = "index.html";
   }
 }
 
-// =============================
-// Inicialización
-// =============================
 cargarEstudiantes();
 listarArchivos();
